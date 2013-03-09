@@ -77,9 +77,10 @@ Chat.prototype.attachEvents = function(){
 
 //add a user to $userList
 Chat.prototype.addUser = function(id){
-
-    //add the user to the user list 
-
+        if(id){
+        //add the user to the user list 
+        this.$userList.append('<li>'+unescape(id)+'</li>');
+    }
 }
 
 //update the chat when someone says something
@@ -89,6 +90,10 @@ Chat.prototype.updateChat = function(user, message){
 
 // update the room with a general message from the server
 Chat.prototype.activity = function(message){
+    message = message || '';
+
+    //append the activity message to the chat room
+    this.$chat.append('<li><i>'+message+'</i></li>')
 
 }
 
