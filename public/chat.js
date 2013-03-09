@@ -25,7 +25,12 @@ Chat.prototype.attachEvents = function(){
 
     //when the enter key is pressed send a message to teh server and clear the input
     this.$chatInput.on('keyup', function(e){
-
+        if(e.keyCode === 13){
+            var el = $(this);
+            var message = el.val()
+            var user = self.user.name
+            socket.emit('sendMessage', {user : user, message : message});
+            el.val('');
     });
 
     //when "enter" is pressed, send an update to the server and update your activity in the chat
@@ -43,14 +48,15 @@ Chat.prototype.attachEvents = function(){
     //initial data from the server about the connected client
     //cache the user data on the client for future use
     socket.on('setClientID', function(id){
+        self.user.id = id;
+        self.user.name = id;
 
     });
 
     //when the user list needs updated
     //this is called when a user enters the room, leaves the room, or changes their user name
     socket.on('updateList', function(data){
-        self.user.id = id;
-        self.user.name = id;
+        self.updateUserList(data)
     });
 
     //when a user leaves the room
@@ -65,7 +71,7 @@ Chat.prototype.attachEvents = function(){
 
     //when the chatroom recieves a message
     socket.on('chatUpdate', function(data){
-
+        self.updateChat(data.user, data.message);
     });
 }
 
