@@ -49,7 +49,8 @@ Chat.prototype.attachEvents = function(){
     //when the user list needs updated
     //this is called when a user enters the room, leaves the room, or changes their user name
     socket.on('updateList', function(data){
-
+        self.user.id = id;
+        self.user.name = id;
     });
 
     //when a user leaves the room
